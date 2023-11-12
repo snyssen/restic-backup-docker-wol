@@ -1,0 +1,55 @@
+name: Check for new release of lobaro/restic-backup-docker and mirror if needed
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: joutvhu/get-release@v1
+        name: get target release from lobaro
+        id: target_release
+        with:
+          owner: lobaro
+          repo: restic-backup-docker
+          latest: true
+          # Tag name start with `v`
+          pattern: "^v.*"
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: joutvhu/get-release@v1
+        name: get current release in this repo
+        id: current_release
+        with:
+          latest: true
+          # Tag name start with `v`
+          pattern: "^v.*"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compare releases
+        id: compare_release
+        run: |
+
+          # Compare the fetched release tag with the previous release tag
+          if [ "${{ steps.target_release.outputs.tag_name }}" != "${{ steps.current_release.outputs.tag_name }}" ]; then
+            echo "new_release=true" >> $GITHUB_OUTPUT
+            echo "New release (${{ steps.target_release.outputs.tag_name }}) detected. Current is: ${{ steps.current_release.outputs.tag_name }}"
+          else
+            echo "new_release=false" >> $GITHUB_OUTPUT
+            echo "Target release (${{ steps.target_release.outputs.tag_name }}) equals current one (${{ steps.current_release.outputs.tag_name }})"
+          fi
+
+      - name: Mirror new release
+        if: steps.compare_release.outputs.new_release == 'true'
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.target_release.outputs.tag_name }}
+          release_name: ${{ steps.target_release.outputs.name }}
+          body: ${{ steps.target_release.outputs.body }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
