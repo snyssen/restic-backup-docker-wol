@@ -18,8 +18,8 @@ jobs:
           latest: true
           # Tag name start with `v`
           pattern: "^v.*"
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: joutvhu/get-release@v1
         name: get current release in this repo
