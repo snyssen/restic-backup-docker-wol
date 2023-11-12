@@ -43,18 +43,18 @@ jobs:
             echo "Target release (${{ steps.target_release.outputs.tag_name }}) equals current one (${{ steps.current_release.outputs.tag_name }})"
           fi
 
-      - uses: actions/checkout@v4
-        if: steps.compare_release.outputs.new_release == 'true'
+      # - uses: actions/checkout@v4
+      #   if: steps.compare_release.outputs.new_release == 'true'
 
-      - name: Update targeted version in Dockerfile
-        if: steps.compare_release.outputs.new_release == 'true'
-        run: |
-          sed -i 's/${{ steps.current_release.outputs.tag_name }}/${{ steps.target_release.outputs.tag_name }}/g' Dockerfile
+      # - name: Update targeted version in Dockerfile
+      #   if: steps.compare_release.outputs.new_release == 'true'
+      #   run: |
+      #     sed -i 's/${{ steps.current_release.outputs.tag_name }}/${{ steps.target_release.outputs.tag_name }}/g' Dockerfile
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        if: steps.compare_release.outputs.new_release == 'true'
-        with:
-          commit_message: "chore(releases): bump to ${{ steps.target_release.outputs.tag_name }} (automated)"
+      # - uses: stefanzweifel/git-auto-commit-action@v5
+      #   if: steps.compare_release.outputs.new_release == 'true'
+      #   with:
+      #     commit_message: "chore(releases): bump to ${{ steps.target_release.outputs.tag_name }} (automated)"
 
       - name: Mirror new release
         if: steps.compare_release.outputs.new_release == 'true'
