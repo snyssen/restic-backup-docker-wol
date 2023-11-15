@@ -1,4 +1,4 @@
-# restic-backup-docker-wol-2
+# restic-backup-docker-wol
 
 A Docker container to automate [restic backups](https://restic.github.io/), based on the [one made by Lobaro](https://github.com/lobaro/restic-backup-docker). The single change made is the addition of the `awake` package so hooks (namely the `pre-backup.sh` one) can wake other server(s) on LAN using Wake-On-LAN (WOL).
 
