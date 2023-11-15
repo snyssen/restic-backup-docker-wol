@@ -49,7 +49,7 @@ jobs:
       - name: Update targeted version in Dockerfile
         if: steps.compare_release.outputs.new_release == 'true'
         run: |
-          sed -i 's/${{ steps.current_release.outputs.tag_name }}/${{ steps.target_release.outputs.tag_name }}/g' Dockerfile
+          sed -i 's/${{ steps.current_release.outputs.tag_name || 'v0.0.0' }}/${{ steps.target_release.outputs.tag_name }}/g' Dockerfile
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         if: steps.compare_release.outputs.new_release == 'true'
