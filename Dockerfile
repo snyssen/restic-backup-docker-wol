@@ -1,2 +1,2 @@
-FROM ghcr.io/lobaro/restic-backup-docker:v1.3.2
+FROM ghcr.io/lobaro/restic-backup-docker:v1.4.0
 RUN apk add --update --no-cache awake
