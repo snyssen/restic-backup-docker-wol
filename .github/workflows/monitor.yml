@@ -51,7 +51,7 @@ jobs:
         run: |
           sed -i 's/${{ steps.current_release.outputs.tag_name || 'v0.0.0' }}/${{ steps.target_release.outputs.tag_name }}/g' Dockerfile
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v6
         if: steps.compare_release.outputs.new_release == 'true'
         with:
           commit_message: "chore(releases): bump to ${{ steps.target_release.outputs.tag_name }} (automated)"
