@@ -41,7 +41,7 @@ jobs:
             echo "Target release (${{ steps.target_release.outputs.tag_name }}) equals current one (${{ steps.current_release.outputs.tag_name }})"
           fi
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         if: steps.compare_release.outputs.new_release == 'true'
 
       - name: Update targeted version in Dockerfile
